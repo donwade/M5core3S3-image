@@ -25,5 +25,13 @@
 #  Hard resetting via RTS pin...
 #  
 
-/home/dwade/.arduino15/packages/m5stack/tools/esptool_py/5.0.dev1/esptool --chip esp32s3 --port /dev/ttyACM0 --baud 921600 read_flash 0 0x1000000 espCore3s3.bin
+ask 'save'
+if [ $? != 0 ]; then
+    /home/dwade/.arduino15/packages/m5stack/tools/esptool_py/5.0.dev1/esptool --chip esp32s3 --port /dev/ttyACM0 --baud 921600 read_flash 0 0x1000000 espCore3s3.bin
+fi
+
+ask 'restore'
+if [ $? != 0 ]; then
+    /home/dwade/.arduino15/packages/m5stack/tools/esptool_py/5.0.dev1/esptool --chip esp32s3 --port /dev/ttyACM0 --baud 921600 --before default-reset --after hard-reset write-flash --flash-mode dio --flash-freq 80m --flash-size 16MB  0  espCore3s3.bin
+fi
 
